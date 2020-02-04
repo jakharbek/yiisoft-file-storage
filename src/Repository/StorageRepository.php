@@ -25,4 +25,20 @@ class StorageRepository extends Repository
         }
         return $storage;
     }
+
+    /**
+     * @param $tag
+     * @return Storage|null
+     * @throws \Exception
+     */
+    public function getByTag($tag): ?Storage
+    {
+        $storage = $this->select
+            ->andWhere(['tag' => $tag])
+            ->orderBy('id','RAND()');
+        if (!is_a($storage, Storage::class)) {
+            throw new \Exception("Storage is not founded");
+        }
+        return $storage;
+    }
 }
