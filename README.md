@@ -70,7 +70,6 @@ you should use the repository entity to create an instance of it fill the constr
 
 ```php
 use Yiisoft\File\Storage;
-use Yiisoft\File\File;
 use Yiisoft\File\Adapter\AdapterFactory;
 use Yiisoft\File\Dto\SftpAdapterDTO;
 
@@ -95,6 +94,18 @@ Upload File from $_FILES
 -----------
 `profile-image` is sent file and is index in $_FILES 
 ```php
+use Yiisoft\File\File;
+//one
 $file = File::getInstanceByFilesArray('profile-image');
-$file->put('/profile/image/1.jpg')
+$file->put('/profile/image/1.jpg');//local storage
+
+$file = File::getInstanceByFilesArray('profile-image');
+$file->put('/profile/image/1.jpg','imageServer');//anyone server by tag
+//more
+$files_array = File::getInstancesByFilesArray('profiles-image');
+
+foreach($files_array as $file){
+    $file = File::getInstanceByFilesArray('profile-image');
+    $file->put('/profile/image/1.jpg','imageServer');//anyone server by tag
+}
 ```
