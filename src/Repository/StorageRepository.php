@@ -4,6 +4,7 @@
 namespace Yiisoft\File\Repository;
 
 use Cycle\ORM\Select\Repository;
+use Yiisoft\File\File;
 use Yiisoft\File\Storage;
 
 /**
@@ -35,10 +36,15 @@ class StorageRepository extends Repository
     {
         $storage = $this->select
             ->andWhere(['tag' => $tag])
-            ->orderBy('id','RAND()');
+            ->orderBy('id', 'RAND()');
         if (!is_a($storage, Storage::class)) {
             throw new \Exception("Storage is not founded");
         }
         return $storage;
+    }
+
+    public function test()
+    {
+
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Yiisoft\File;
 
 use Cycle\ORM\ORMInterface;
@@ -43,10 +42,15 @@ class File
 
     /**
      * @var string
+     * @Column(type = "string(2048)", nullable = false)
+     */
+    protected $filename;
+
+    /**
+     * @var string
      * @Column(type = "string(2048)", nullable = true)
      */
     protected $title;
-
 
     /**
      * @var string
@@ -75,6 +79,12 @@ class File
      * @var bool
      */
     private $_useCache = true;
+
+    /**
+     * @var string
+     * @Column(type = "string(2048)", nullable = false)
+     */
+    public $public_url;
 
     /**
      * File constructor.
@@ -133,6 +143,11 @@ class File
         $tmpName = $uploadedFile['tmp_name'];
         $file = self::getInstance($tmpName, $storageTag);
         $file->setTitle($tmpName['name']);
+        try {
+            $file->setPublicUrl();
+        } catch (\Exception $exception) {
+
+        }
 
         if (!$file->exists()) {
             throw new FileException("File is not exists");
@@ -195,24 +210,6 @@ class File
 
         $storage->setFile($this);
         return $storage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param $path
-     * @return string
-     */
-    public function setPath($path): ?string
-    {
-        $this->exists($path) ? $this->path = $path : NULL;
-        return $this->getPath();
     }
 
     /**
@@ -433,5 +430,100 @@ class File
 
         return $this->getStatus();
     }
+
+    /**
+     * @return string
+     */
+    public function getBasename()
+    {
+        return $this->getPathInfo()['basename'];
+    }
+
+    /**
+     * @return string|string[]
+     */
+    public function getPathInfo()
+    {
+        return pathinfo($this->getPath());
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param $path
+     * @return string
+     */
+    public function setPath($path): ?string
+    {
+        $this->exists($path) ? $this->path = $path : NULL;
+        return $this->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->getPathInfo()['extension'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->getPathInfo()['filename'];
+    }
+
+    /**
+     * @return string|string[]
+     * @throws \Exception
+     */
+    public function relativePath()
+    {
+        return str_replace($this->getStorage()->getRoot(), $this->path);
+    }
+
+    /**
+     * @return string|string[]
+     * @throws \Exception
+     */
+    public function relativeDir()
+    {
+        return str_replace($this->getStorage()->getRoot(), $this->getDir());
+    }
+
+    /**
+     * @return string
+     */
+    public function getDir()
+    {
+        return $this->getPathInfo()['dirname'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublicUrl()
+    {
+        return $this->public_url;
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function setPublicUrl()
+    {
+        $this->public_url = $this->getStorage()->getPublicRoot() . $this->relativePath();
+        return $this->getPublicUrl();
+    }
+
 
 }

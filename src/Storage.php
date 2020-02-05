@@ -1,13 +1,12 @@
 <?php
 
-
 namespace Yiisoft\File;
-
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
 use Yiisoft\File\Adapter\AdapterFactory;
+use Yiisoft\File\Adapter\LocalAdapter;
 use Yiisoft\File\Dto\LocalAdapterDTO;
 use Yiisoft\File\Exception\FileException;
 use Yiisoft\File\Helper\ConfigHelper;
@@ -21,50 +20,49 @@ class Storage
 {
 
     /**
+     * @Column(type = "text", nullable = true)
+     */
+    public $public_root;
+    /**
      * @Column(type = "primary")
      */
     protected $id;
-
     /**
      * @Column(type = "string(255)", nullable = false)
      */
     protected $alias;
-
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $type;
-
+    /**
+     * @var
+     */
+    protected $root;
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $tag;
-
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $connectionParams;
-
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $configParams;
-
     /**
      * @Column(type = "integer(2)", default = 1)
      */
     protected $status;
-
     /**
      * @var Filesystem
      */
     private $_filesystem;
-
     /**
      * @var AdapterInterface
      */
     private $_adapter;
-
     /**
      * @var File
      */
@@ -140,6 +138,20 @@ class Storage
     {
         $this->configParams = (strlen($params) == 0) ? null : serialize($params);
         return $this->getConfigParams();
+    }
+
+    /**
+     * @return Storage
+     * @throws Exception\AdapterException
+     */
+    public static function getLocalStorage()
+    {
+        $dto = new LocalAdapterDTO();
+        $dto->root = ConfigHelper::getParam('file.storage')['local']['root'];
+        $dto->permissions = ConfigHelper::getParam('file.storage')['local']['permissions'];
+        $dto->linkHandling = ConfigHelper::getParam('file.storage')['local']['linkHandling'] ?? Local::DISALLOW_LINKS;
+        $dto->writeFlags = ConfigHelper::getParam('file.storage')['local']['writeFlags'] ?? LOCK_EX;
+        return new Storage($dto);
     }
 
     /**
@@ -477,16 +489,75 @@ class Storage
     }
 
     /**
-     * @return Storage
+     * @return mixed
+     */
+    public function getRoot()
+    {
+        if (is_a($this->getAdapter(), LocalAdapter::class)) {
+            return ConfigHelper::getParam('file.storage')['local']['root'];
+        }
+        return $this->root;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function setRoot($value)
+    {
+        $this->root = $value;
+        return $this->getRoot();
+    }
+
+    /**
+     * @return mixed
      * @throws Exception\AdapterException
      */
-    public static function getLocalStorage()
+    public function getPublicRoot()
     {
-        $dto = new LocalAdapterDTO();
-        $dto->root = ConfigHelper::getParam('file.storage')['local']['root'];
-        $dto->permissions = ConfigHelper::getParam('file.storage')['local']['permissions'];
-        $dto->linkHandling = ConfigHelper::getParam('file.storage')['local']['linkHandling'] ?? Local::DISALLOW_LINKS;
-        $dto->writeFlags = ConfigHelper::getParam('file.storage')['local']['writeFlags'] ?? LOCK_EX;
-        return new Storage($dto);
+        if (is_a($this->getAdapter(), LocalAdapter::class)) {
+            return ConfigHelper::getParam('file.storage')['local']['public_root'];
+        }
+
+        return $this->public_root;
     }
+
+    /**
+     * @param $value
+     * @return mixed
+     * @throws Exception\AdapterException
+     */
+    public function setPublicRoot($value)
+    {
+        $this->public_root = $this->value;
+        return $this->getPublicRoot();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlias()
+    {
+        return $this->alias;
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function setAlias($value)
+    {
+        return $this->alias = $value;
+    }
+
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    public function setTag($value)
+    {
+        return $this->tag = $value;
+    }
+
 }
