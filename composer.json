@@ -31,16 +31,18 @@
         "royvoetman/flysystem-gitlab-storage": "^1.0",
         "spatie/flysystem-dropbox": "^1.2",
         "superbalist/flysystem-google-storage": "^7.2",
-        "yiisoft/di": "^3.0@dev",
         "yiisoft/yii-cycle": "^3.0@dev"
     },
     "require-dev": {
+        "hiqdev/composer-config-plugin": "^1.0@dev",
         "phpunit/phpunit": "^8.4",
-        "phan/phan": "^2.4"
+        "phan/phan": "^2.4",
+        "yiisoft/aliases": "^3.0@dev",
+        "yiisoft/di": "^3.0@dev"
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\file\\": "src"
+            "Yiisoft\\File\\": "src"
         }
     },
     "autoload-dev": {
@@ -50,13 +52,21 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "1.0.x-dev"
+        },
+        "config": {
+            "sort-packages": true
+        },
+        "config-plugin": {
+            "params": "config/params.php"
+        },
+        "config-plugin-dev": {
+            "tests": [
+                "config/params.php"
+            ]
         }
     },
     "scripts": {
         "phan": "phan --progress-bar -o analysis.txt"
-    },
-    "config": {
-        "sort-packages": true
     }
 }

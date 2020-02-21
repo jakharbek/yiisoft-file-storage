@@ -62,7 +62,11 @@ class AdapterHelper
             throw new $exceptionClass("The \"{$attr}\" property must be set.");
         }
 
-        if (strlen(trim($attributes[$attr])) == 0) {
+        if (is_array($attributes[$attr]) && count($attributes[$attr]) == 0) {
+            throw new $exceptionClass("The \"{$attr}\" property must be set.");
+        }
+
+        if (is_string($attributes[$attr]) && strlen(trim($attributes[$attr])) == 0) {
             throw new $exceptionClass("The \"{$attr}\" property must be set.");
         }
     }

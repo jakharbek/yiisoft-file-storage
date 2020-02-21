@@ -33,3 +33,12 @@ phpunit.phar
 # Phan
 analysis.txt
 
+#dev
+/developement
+/docker-compose.yml
+.env
+/docker-compose.apache.yml
+/docker-compose.fpm-nginx.yml
+/php/
+_host-volumes
+.github

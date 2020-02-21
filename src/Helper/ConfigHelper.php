@@ -15,7 +15,13 @@ class ConfigHelper
      */
     public static function getParam($param)
     {
-        $params = dirname(__DIR__)."/../config/params.php";
-        return $params[$param] ?? $param;
+        $params = self::getParams();
+        return $params[$param] ?? null;
+    }
+
+    public static function getParams()
+    {
+        $params = require \hiqdev\composer\config\Builder::path('params');
+        return $params;
     }
 }
