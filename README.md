@@ -28,7 +28,7 @@ php composer.phar require --prefer-dist yiisoft/yii-file
 or add
 
 ```
-"yiisoft/file": "*"
+"yiisoft/yii-file": "*"
 ```
 
 to the require section of your `composer.json` file.
