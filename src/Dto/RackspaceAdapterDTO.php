@@ -1,11 +1,11 @@
 <?php
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 use OpenCloud\Rackspace;
 
 /**
  * Class RockspaceAdapterDTO
- * @package Yiisoft\File\Dto
+ * @package Yiisoft\Yii\File\Dto
  */
 class RackspaceAdapterDTO
 {

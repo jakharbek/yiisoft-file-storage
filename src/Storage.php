@@ -1,19 +1,19 @@
 <?php
 
-namespace Yiisoft\File;
+namespace Yiisoft\Yii\File;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
-use Yiisoft\File\Adapter\AdapterFactory;
-use Yiisoft\File\Adapter\LocalAdapter;
-use Yiisoft\File\Dto\LocalAdapterDTO;
-use Yiisoft\File\Exception\FileException;
-use Yiisoft\File\Helper\ConfigHelper;
+use Yiisoft\Yii\File\Adapter\AdapterFactory;
+use Yiisoft\Yii\File\Adapter\LocalAdapter;
+use Yiisoft\Yii\File\Dto\LocalAdapterDTO;
+use Yiisoft\Yii\File\Exception\FileException;
+use Yiisoft\Yii\File\Helper\ConfigHelper;
 
 /**
  * Class Storage
- * @package Yiisoft\File
+ * @package Yiisoft\Yii\File
  * @Entity(repository = "Yiisoft/File/Repository/StorageRepository")
  */
 class Storage

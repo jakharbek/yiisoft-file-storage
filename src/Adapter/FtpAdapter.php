@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
-use Yiisoft\File\Dto\FtpAdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\FtpAdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class FtpAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class FtpAdapter extends \League\Flysystem\Adapter\Ftp
 {

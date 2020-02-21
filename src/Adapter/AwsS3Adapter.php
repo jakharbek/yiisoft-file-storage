@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 use Aws\S3\S3Client;
-use Yiisoft\File\Dto\AwsS3AdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\AwsS3AdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class AwsS3Adapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class AwsS3Adapter extends \League\Flysystem\AwsS3v3\AwsS3Adapter
 {

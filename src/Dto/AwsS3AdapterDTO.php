@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 use Aws\S3\UseArnRegion\ConfigurationProvider as UseArnRegionConfigurationProvider;
 

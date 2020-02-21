@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class ScalewayObjectStorageAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class ScalewayObjectStorageAdapter extends AwsS3Adapter
 {

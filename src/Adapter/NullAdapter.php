@@ -1,12 +1,12 @@
 <?php
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
-use Yiisoft\File\Dto\NullAdapterDTO;
+use Yiisoft\Yii\File\Dto\NullAdapterDTO;
 
 /**
  * Class NullAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class NullAdapter extends \League\Flysystem\Adapter\NullAdapter
 {

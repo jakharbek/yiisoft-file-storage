@@ -1,6 +1,6 @@
 <?php
 
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 
 /**

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 /**
  * Class CachedAdapterDTO
- * @package Yiisoft\File\Dto
+ * @package Yiisoft\Yii\File\Dto
  */
 class CachedAdapterDTO
 {

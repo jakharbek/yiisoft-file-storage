@@ -1,16 +1,16 @@
 <?php
 
-namespace Yiisoft\File;
+namespace Yiisoft\Yii\File;
 
 use Cycle\ORM\ORMInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\File\Exception\FileException;
-use Yiisoft\File\Exception\StorageException;
-use Yiisoft\File\Repository\StorageRepository;
+use Yiisoft\Yii\File\Exception\FileException;
+use Yiisoft\Yii\File\Exception\StorageException;
+use Yiisoft\Yii\File\Repository\StorageRepository;
 
 /**
  * Class File
- * @package Yiisoft\Files
+ * @package Yiisoft\Yii\Files
  * @Entity(repository = "Yiisoft/File/Repository/FileRepository")
  */
 class File

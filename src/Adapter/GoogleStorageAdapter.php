@@ -1,18 +1,18 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
-use Yiisoft\File\Dto\GoogleStorageAdapterDTO;
+use Yiisoft\Yii\File\Dto\GoogleStorageAdapterDTO;
 use Google\Cloud\Storage\StorageClient;
 use Superbalist\Flysystem\GoogleStorage\GoogleStorageAdapter as GoogleStorage;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class GoogleStorageAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class GoogleStorageAdapter extends GoogleStorage
 {

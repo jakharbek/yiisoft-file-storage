@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/file",
+    "name": "yiisoft/yii-file",
     "type": "library",
     "description": "file",
     "keywords": [
@@ -42,12 +42,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\File\\": "src"
+            "Yiisoft\\Yii\\File\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\File\\Tests\\": "tests"
+            "Yiisoft\\Yii\\File\\Tests\\": "tests"
         }
     },
     "extra": {

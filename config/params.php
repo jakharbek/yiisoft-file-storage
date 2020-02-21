@@ -67,7 +67,7 @@ return [
     # Конфиг миграций
     'cycle.migrations' => [
         'directory' => '/var/www/html/src/migrations',
-        'namespace' => 'Yiisoft\\File\\Migration',
+        'namespace' => 'Yiisoft\\Yii\\File\\Migration',
         'table' => 'migration',
         'safe' => false,
     ],

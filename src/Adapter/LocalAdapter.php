@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
-use Yiisoft\File\Dto\LocalAdapterDTO;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\LocalAdapterDTO;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class LocalAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class LocalAdapter extends \League\Flysystem\Adapter\Local
 {

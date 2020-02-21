@@ -1,9 +1,9 @@
 <?php
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 /**
  * Class MemoryAdapterDTO
- * @package Yiisoft\File\Dto
+ * @package Yiisoft\Yii\File\Dto
  */
 class MemoryAdapterDTO
 {

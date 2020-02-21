@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Yiisoft\File\Exception;
+namespace Yiisoft\Yii\File\Exception;
 
 
 class StorageException extends \Exception

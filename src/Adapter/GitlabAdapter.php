@@ -1,17 +1,17 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
 use RoyVoetman\FlysystemGitlab\Client;
-use Yiisoft\File\Dto\GitlabAdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\GitlabAdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class GitlabAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class GitlabAdapter extends \RoyVoetman\FlysystemGitlab\GitlabAdapter
 {

@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Yiisoft\File\Tests;
+namespace Yiisoft\Yii\File\Tests;
 
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\File\Adapter\AdapterFactory;
-use Yiisoft\File\Adapter\LocalAdapter;
-use Yiisoft\File\Dto\LocalAdapterDTO;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Adapter\AdapterFactory;
+use Yiisoft\Yii\File\Adapter\LocalAdapter;
+use Yiisoft\Yii\File\Dto\LocalAdapterDTO;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 class FileStorageTest extends TestCase
 {
@@ -16,7 +16,7 @@ class FileStorageTest extends TestCase
     /**
      * @param $dto
      * @param $adapterClass
-     * @throws \Yiisoft\File\Exception\AdapterException
+     * @throws \Yiisoft\Yii\File\Exception\AdapterException
      * @dataProvider getTestFactory
      */
     public function testFactory($dto, $adapterClass)

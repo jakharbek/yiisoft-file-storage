@@ -1,18 +1,18 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
-use Yiisoft\File\Dto\RackspaceAdapterDTO;
+use Yiisoft\Yii\File\Dto\RackspaceAdapterDTO;
 use OpenCloud\ObjectStore\Resource\Container;
 use OpenCloud\OpenStack;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class RackspaceAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class RackspaceAdapter extends \League\Flysystem\Rackspace\RackspaceAdapter
 {

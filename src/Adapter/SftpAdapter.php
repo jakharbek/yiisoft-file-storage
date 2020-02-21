@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
-use Yiisoft\File\Dto\FtpAdapterDTO;
-use Yiisoft\File\Dto\SftpAdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\FtpAdapterDTO;
+use Yiisoft\Yii\File\Dto\SftpAdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 /**
  * Class SftpAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class SftpAdapter extends \League\Flysystem\Sftp\SftpAdapter
 {

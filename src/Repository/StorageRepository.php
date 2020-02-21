@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Yiisoft\File\Repository;
+namespace Yiisoft\Yii\File\Repository;
 
 use Cycle\ORM\Select\Repository;
-use Yiisoft\File\File;
-use Yiisoft\File\Storage;
+use Yiisoft\Yii\File\File;
+use Yiisoft\Yii\File\Storage;
 
 /**
  * Class StorageRepository
- * @package Yiisoft\File\Repository
+ * @package Yiisoft\Yii\File\Repository
  */
 class StorageRepository extends Repository
 {

@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
-use Yiisoft\File\Dto\ReplicateAdapterDTO;
+use Yiisoft\Yii\File\Dto\ReplicateAdapterDTO;
 use League\Flysystem\AdapterInterface;
-use Yiisoft\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Exception\AdapterException;
 
 /**
  * Class ReplicateAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class ReplicateAdapter extends \League\Flysystem\Replicate\ReplicateAdapter
 {

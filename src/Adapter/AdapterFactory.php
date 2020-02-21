@@ -1,31 +1,31 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
-use Yiisoft\File\Dto\AwsS3AdapterDTO;
-use Yiisoft\File\Dto\AzureAdapterDTO;
-use Yiisoft\File\Dto\CachedAdapterDTO;
-use Yiisoft\File\Dto\DigitalOceanSpacesAdapterDTO;
-use Yiisoft\File\Dto\DropboxAdapterDTO;
-use Yiisoft\File\Dto\FtpAdapterDTO;
-use Yiisoft\File\Dto\GitlabAdapterDTO;
-use Yiisoft\File\Dto\GoogleStorageAdapterDTO;
-use Yiisoft\File\Dto\LocalAdapterDTO;
-use Yiisoft\File\Dto\MemoryAdapterDTO;
-use Yiisoft\File\Dto\NullAdapterDTO;
-use Yiisoft\File\Dto\RackspaceAdapterDTO;
-use Yiisoft\File\Dto\ReplicateAdapterDTO;
-use Yiisoft\File\Dto\ScalewayObjectStorageAdapterDTO;
-use Yiisoft\File\Dto\SftpAdapterDTO;
-use Yiisoft\File\Dto\WebDAVAdapterDTO;
-use Yiisoft\File\Dto\ZipArchiveAdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Dto\AwsS3AdapterDTO;
+use Yiisoft\Yii\File\Dto\AzureAdapterDTO;
+use Yiisoft\Yii\File\Dto\CachedAdapterDTO;
+use Yiisoft\Yii\File\Dto\DigitalOceanSpacesAdapterDTO;
+use Yiisoft\Yii\File\Dto\DropboxAdapterDTO;
+use Yiisoft\Yii\File\Dto\FtpAdapterDTO;
+use Yiisoft\Yii\File\Dto\GitlabAdapterDTO;
+use Yiisoft\Yii\File\Dto\GoogleStorageAdapterDTO;
+use Yiisoft\Yii\File\Dto\LocalAdapterDTO;
+use Yiisoft\Yii\File\Dto\MemoryAdapterDTO;
+use Yiisoft\Yii\File\Dto\NullAdapterDTO;
+use Yiisoft\Yii\File\Dto\RackspaceAdapterDTO;
+use Yiisoft\Yii\File\Dto\ReplicateAdapterDTO;
+use Yiisoft\Yii\File\Dto\ScalewayObjectStorageAdapterDTO;
+use Yiisoft\Yii\File\Dto\SftpAdapterDTO;
+use Yiisoft\Yii\File\Dto\WebDAVAdapterDTO;
+use Yiisoft\Yii\File\Dto\ZipArchiveAdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
 
 /**
  * Class AdapterFactory
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class AdapterFactory
 {

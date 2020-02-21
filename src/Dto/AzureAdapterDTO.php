@@ -1,10 +1,10 @@
 <?php
 
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 /**
  * Class AzureAdapterDTO
- * @package Yiisoft\File\Dto
+ * @package Yiisoft\Yii\File\Dto
  */
 class AzureAdapterDTO
 {

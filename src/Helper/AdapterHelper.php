@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Yiisoft\File\Helper;
+namespace Yiisoft\Yii\File\Helper;
 
 
-use Yiisoft\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Exception\AdapterException;
 
 /**
  * Class AdapterHelper
- * @package Yiisoft\File\Helper
+ * @package Yiisoft\Yii\File\Helper
  */
 class AdapterHelper
 {

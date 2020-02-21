@@ -1,9 +1,9 @@
 <?php
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 /**
  * Class DropboxAdapterDTO
- * @package Yiisoft\File\Dto
+ * @package Yiisoft\Yii\File\Dto
  */
 class DropboxAdapterDTO
 {

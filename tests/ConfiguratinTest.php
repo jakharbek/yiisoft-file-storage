@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yiisoft\File\Tests;
+namespace Yiisoft\Yii\File\Tests;
 
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\File\Helper\ConfigHelper;
+use Yiisoft\Yii\File\Helper\ConfigHelper;
 
 class ConfiguratinTest extends TestCase
 {

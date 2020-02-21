@@ -2,17 +2,17 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://github.com/yiisoft.png" height="100px">
     </a>
-    <h1 align="center">Yii File Storage</h1>
+    <h1 align="center">Yii Yii File</h1>
     <br>
 </p>
 
 The package File Storage System
 
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/_____/v/stable.png)](https://packagist.org/packages/yiisoft/_____)
-[![Total Downloads](https://poser.pugx.org/yiisoft/_____/downloads.png)](https://packagist.org/packages/yiisoft/_____)
-[![Build Status](https://travis-ci.com/yiisoft/_____.svg?branch=master)](https://travis-ci.com/yiisoft/_____)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/_____/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/_____/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/_____/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/_____/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii-file/v/stable.png)](https://packagist.org/packages/yiisoft/yii-file)
+[![Total Downloads](https://poser.pugx.org/yiisoft/yii-file/downloads.png)](https://packagist.org/packages/yiisoft/yii-file)
+[![Build Status](https://travis-ci.com/yiisoft/yii-file.svg?branch=master)](https://travis-ci.com/yiisoft/_____)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/yii-file/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-file/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/yii-file/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-file/?branch=master)
 
 Installation
 ------------
@@ -22,7 +22,7 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yiisoft/file
+php composer.phar require --prefer-dist yiisoft/yii-file
 ```
 
 or add
@@ -69,9 +69,9 @@ Now you need to update the database schema and get a new table
 you should use the repository entity to create an instance of it fill the constructor
 
 ```php
-use Yiisoft\File\Storage;
-use Yiisoft\File\Adapter\AdapterFactory;
-use Yiisoft\File\Dto\SftpAdapterDTO;
+use Yiisoft\Yii\File\Storage;
+use Yiisoft\Yii\File\Adapter\AdapterFactory;
+use Yiisoft\Yii\File\Dto\SftpAdapterDTO;
 
 $dto = new SftpAdapterDTO();
 $dto->host = "host";
@@ -94,7 +94,7 @@ Upload File from $_FILES
 -----------
 `profile-image` is sent file and is index in $_FILES 
 ```php
-use Yiisoft\File\File;
+use Yiisoft\Yii\File\File;
 //one
 $file = File::getInstanceByFilesArray('profile-image');
 $file->put('/profile/image/1.jpg');//local storage

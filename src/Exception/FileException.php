@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yiisoft\File\Exception;
+namespace Yiisoft\Yii\File\Exception;
 
 /**
  * Class FileException
- * @package Yiisoft\File\Exception
+ * @package Yiisoft\Yii\File\Exception
  */
 class FileException extends \Exception
 {

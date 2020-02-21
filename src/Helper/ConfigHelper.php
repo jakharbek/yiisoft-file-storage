@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yiisoft\File\Helper;
+namespace Yiisoft\Yii\File\Helper;
 
 /**
  * Class ConfigHelper
- * @package Yiisoft\File\Helper
+ * @package Yiisoft\Yii\File\Helper
  */
 class ConfigHelper
 {

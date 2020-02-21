@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
 use League\Flysystem\AdapterInterface;
-use Yiisoft\File\Dto\CachedAdapterDTO;
-use Yiisoft\File\Exception\AdapterException;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Dto\CachedAdapterDTO;
+use Yiisoft\Yii\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 class CachedAdapter extends \League\Flysystem\Cached\CachedAdapter
 {

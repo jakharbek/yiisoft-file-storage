@@ -1,5 +1,5 @@
 <?php
-namespace Yiisoft\File\Dto;
+namespace Yiisoft\Yii\File\Dto;
 
 use League\Flysystem\Adapter\Local;
 

@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 
-use Yiisoft\File\Dto\WebDAVAdapterDTO;
+use Yiisoft\Yii\File\Dto\WebDAVAdapterDTO;
 use Sabre\DAV\Client;
-use Yiisoft\File\Exception\AdapterException;
+use Yiisoft\Yii\File\Exception\AdapterException;
 
 class WebDAVAdapter extends \League\Flysystem\WebDAV\WebDAVAdapter
 {

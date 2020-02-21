@@ -11,7 +11,7 @@
     </php>
 
     <testsuites>
-        <testsuite name="Yii  file storage tests">
+        <testsuite name="Yii Yii File tests">
             <directory>./tests</directory>
         </testsuite>
     </testsuites>

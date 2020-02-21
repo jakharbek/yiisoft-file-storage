@@ -1,14 +1,14 @@
 <?php
 
-namespace Yiisoft\File\Adapter;
+namespace Yiisoft\Yii\File\Adapter;
 
 use League\Flysystem\Config;
 use League\Flysystem\Memory\MemoryAdapter as Memory;
-use Yiisoft\File\Dto\MemoryAdapterDTO;
+use Yiisoft\Yii\File\Dto\MemoryAdapterDTO;
 
 /**
  * Class MemoryAdapter
- * @package Yiisoft\File\Adapter
+ * @package Yiisoft\Yii\File\Adapter
  */
 class MemoryAdapter extends Memory
 {

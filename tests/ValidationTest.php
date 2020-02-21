@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Yiisoft\File\Tests;
+namespace Yiisoft\Yii\File\Tests;
 
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\File\Helper\AdapterHelper;
+use Yiisoft\Yii\File\Helper\AdapterHelper;
 
 class ValidationTest extends TestCase
 {
