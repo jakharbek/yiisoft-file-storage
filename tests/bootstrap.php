@@ -1,6 +1,7 @@
 <?php
 
 // ensure we get report on all possible php errors
+
 error_reporting(E_ALL);
 
 (function (): void {
@@ -9,4 +10,5 @@ error_reporting(E_ALL);
         die('You need to set up the project dependencies using Composer');
     }
     require_once $composerAutoload;
+
 })();
