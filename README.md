@@ -6,7 +6,7 @@
     <br>
 </p>
 
-The package File Storage System
+The package Yii File
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii-file/v/stable.png)](https://packagist.org/packages/yiisoft/yii-file)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii-file/downloads.png)](https://packagist.org/packages/yiisoft/yii-file)
