@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File\Adapter;
 
@@ -8,6 +13,17 @@ use Yiisoft\Yii\File\Dto\WebDAVAdapterDTO;
 use Sabre\DAV\Client;
 use Yiisoft\Yii\File\Exception\AdapterException;
 
+/**
+ * This class of adapter for working with WebDAV
+ * To work with this adapter, pass @see \Yiisoft\Yii\File\Dto\WebDAVAdapterDTO
+ * This class extends the flysystem class, for more information about the adapter
+ * @see https://flysystem.thephpleague.com/v1/docs/adapter/webdav/
+ * @see https://github.com/thephpleague/flysystem-webdav/blob/master/src/WebDAVAdapter.php
+ * @see https://github.com/thephpleague/flysystem-webdav
+ *
+ * Class WebDAVAdapter
+ * @package Yiisoft\Yii\File\Adapter
+ */
 class WebDAVAdapter extends \League\Flysystem\WebDAV\WebDAVAdapter
 {
     /**

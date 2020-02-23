@@ -1,9 +1,24 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
+
 namespace Yiisoft\Yii\File\Dto;
 
 use League\Flysystem\Adapter\Local;
+use Yiisoft\Yii\File\Adapter\LocalAdapter;
 
 /**
+ * This class of DTO for working with Local
+ * This DTO for work with @see LocalAdapter
+ * This DTO implements the flysystem arguments, for more information
+ * @see https://flysystem.thephpleague.com/v1/docs/adapter/local/
+ * @see https://github.com/thephpleague/flysystem/blob/1.x/src/Adapter/Local.php
+ * @see https://github.com/thephpleague/flysystem
+ *
  * Class LocalAdapterDTO
  * @package Dto
  */

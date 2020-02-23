@@ -42,3 +42,5 @@ analysis.txt
 /php/
 _host-volumes
 .github
+/data/
+/_host-volumes/

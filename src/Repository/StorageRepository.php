@@ -1,10 +1,15 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 
 namespace Yiisoft\Yii\File\Repository;
 
 use Cycle\ORM\Select\Repository;
-use Yiisoft\Yii\File\File;
 use Yiisoft\Yii\File\Storage;
 
 /**
@@ -20,6 +25,7 @@ class StorageRepository extends Repository
      */
     public function getByAlias($alias): ?Storage
     {
+        ;
         $storage = $this->findOne(['alias' => $alias]);
         if (!is_a($storage, Storage::class)) {
             throw new \Exception("Storage is not founded");
@@ -35,16 +41,13 @@ class StorageRepository extends Repository
     public function getByTag($tag): ?Storage
     {
         $storage = $this->select
-            ->andWhere(['tag' => $tag])
-            ->orderBy('id', 'RAND()');
+            ->andWhere(['tag' => $tag]);
+
+        $storages = $storage->fetchAll();
+        $storage = $storages[array_rand($storages)];
         if (!is_a($storage, Storage::class)) {
             throw new \Exception("Storage is not founded");
         }
         return $storage;
-    }
-
-    public function test()
-    {
-
     }
 }

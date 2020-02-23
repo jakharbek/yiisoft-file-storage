@@ -1,11 +1,24 @@
 <?php
-
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File\Dto;
 
 use Aws\S3\UseArnRegion\ConfigurationProvider as UseArnRegionConfigurationProvider;
+use Yiisoft\Yii\File\Adapter\AwsS3Adapter;
 
 /**
+ * This class of DTO for working with AWS
+ * This DTO for work with @see AwsS3Adapter
+ * This DTO implements the flysystem arguments, for more information
+ * @see https://flysystem.thephpleague.com/v1/docs/adapter/aws-s3-v2/
+ * @see https://github.com/thephpleague/flysystem-aws-s3-v3/blob/master/src/AwsS3Adapter.php
+ * @see https://github.com/thephpleague/flysystem-aws-s3-v3
+ *
  * Class AwsS3AdapterDTO
  * @package Dto
  */

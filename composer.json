@@ -33,7 +33,11 @@
         "superbalist/flysystem-google-storage": "^7.2",
         "yiisoft/yii-cycle": "^3.0@dev",
         "psr/container": "1.0.0",
-        "psr/container-implementation": "1.0.0"
+        "psr/container-implementation": "1.0.0",
+        "cycle/orm": "^1.2",
+        "cycle/annotated": "^2.0",
+        "spiral/database": "^2.7",
+        "cycle/bootstrap": "^0.4.0"
     },
     "require-dev": {
         "hiqdev/composer-config-plugin": "^1.0@dev",
@@ -60,11 +64,10 @@
             "sort-packages": true
         },
         "config-plugin": {
-            "params": "config/params.php"
-        },
-        "config-plugin-dev": {
+            "params": "config/params.php",
+            "common": "config/common.php",
             "tests": [
-                "config/params.php"
+                "config/tests.php"
             ]
         }
     },

@@ -2,9 +2,9 @@
 return [
     'file.storage' => [
             'local' => [
-                'root' => '',
-                'public_url' => '',
-                [
+                'root' => '/var/www/html/tests/static',
+                'public_url' => 'http://static.localhost/',
+                'permissions' => [
                     'file' => [
                         'public' => 0644,
                         'private' => 0600,

@@ -1,4 +1,10 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File;
 
@@ -10,63 +16,95 @@ use Yiisoft\Yii\File\Adapter\LocalAdapter;
 use Yiisoft\Yii\File\Dto\LocalAdapterDTO;
 use Yiisoft\Yii\File\Exception\FileException;
 use Yiisoft\Yii\File\Helper\ConfigHelper;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation\HasMany;
+use Cycle\Annotated\Annotation\Relation\HasOne;
+use Cycle\Annotated\Annotation\Relation\BelongsTo;
+use Cycle\Annotated\Annotation\Table;
+use Cycle\Annotated\Annotation\Table\Index;
 
 /**
  * Class Storage
  * @package Yiisoft\Yii\File
- * @Entity(repository = "Yiisoft/File/Repository/StorageRepository")
+ * @Entity(repository = "Yiisoft\Yii\File\Repository\StorageRepository")
+ * @Table(
+ *      indexes={
+ *             @Index(columns = {"alias"}, unique = true),
+ *             @Index(columns = {"status"})
+ *      }
+ * )
  */
 class Storage
 {
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     /**
      * @Column(type = "text", nullable = true)
      */
     public $public_root;
+
     /**
      * @Column(type = "primary")
      */
     protected $id;
+
     /**
-     * @Column(type = "string(255)", nullable = false)
+     * @Column(type = "string(255)", nullable = false, unique = true)
      */
     protected $alias;
+
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $type;
+
     /**
      * @var
      */
     protected $root;
+
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $tag;
+
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $connectionParams;
+
     /**
      * @Column(type = "text", nullable = true)
      */
     protected $configParams;
+
     /**
      * @Column(type = "integer(2)", default = 1)
      */
     protected $status;
+
     /**
      * @var Filesystem
      */
     private $_filesystem;
+
     /**
      * @var AdapterInterface
      */
     private $_adapter;
+
     /**
      * @var File
      */
     private $_file;
+
+    /**
+     * @Column(type = "text", nullable = true)
+     */
+    protected $template;
 
     /**
      * Storage constructor.
@@ -117,7 +155,12 @@ class Storage
      */
     public function setConnectionParams($params)
     {
-        $this->connectionParams = (strlen($params) == 0) ? null : serialize($params);
+        if (is_object($params) || (is_array($params) && count($params) > 0)) {
+            $this->connectionParams = serialize($params);
+        } else {
+            $this->connectionParams = (strlen($params) == 0) ? null : serialize($params);
+        }
+
         (is_object($params)) ? $this->type = get_class($params) : (is_array($params) ? $this->type = "array" : "string");
         return $this->getConnectionParams();
     }
@@ -151,16 +194,21 @@ class Storage
         $dto->permissions = ConfigHelper::getParam('file.storage')['local']['permissions'];
         $dto->linkHandling = ConfigHelper::getParam('file.storage')['local']['linkHandling'] ?? Local::DISALLOW_LINKS;
         $dto->writeFlags = ConfigHelper::getParam('file.storage')['local']['writeFlags'] ?? LOCK_EX;
-        return new Storage($dto);
+        $store = new Storage($dto);
+        $store->setAlias("local");
+        return $store;
     }
+
 
     /**
      * @param $path
-     * @param $file
+     * @param null $file
      * @param array $config
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileExistsException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     public function write($path, $file = null, $config = [])
     {
@@ -215,10 +263,12 @@ class Storage
         return $this->getFile();
     }
 
+
     /**
-     * @param $path
+     * @param null $path
      * @return bool|false|mixed|resource
      * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function readStream($path = null)
@@ -250,6 +300,7 @@ class Storage
      * @return bool
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function update($file, $path = null, $config = [])
     {
@@ -282,6 +333,8 @@ class Storage
      * @param array $config
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
+     * @throws \League\Flysystem\FileNotFoundException
      */
     public function put($path, $file = null, $config = [])
     {
@@ -314,6 +367,7 @@ class Storage
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function read($path = null)
     {
@@ -328,6 +382,7 @@ class Storage
      * @param $path
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
      */
     public function exists($path = null)
     {
@@ -335,6 +390,7 @@ class Storage
             $this->isFile();
             $path = $this->getFile()->getPath();
         }
+
         return $this->has($path);
     }
 
@@ -353,6 +409,7 @@ class Storage
      * @return bool
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function delete($path = null)
     {
@@ -368,6 +425,7 @@ class Storage
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function readAndDelete($path = null)
     {
@@ -385,6 +443,7 @@ class Storage
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function rename($to, $from = null)
     {
@@ -402,6 +461,7 @@ class Storage
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function copy($to, $from = null)
     {
@@ -417,6 +477,7 @@ class Storage
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function getMimetype($path = null)
     {
@@ -432,6 +493,7 @@ class Storage
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function getTimestamp($path = null)
     {
@@ -447,6 +509,7 @@ class Storage
      * @return bool|false|int
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws FileException
      */
     public function getSize($path = null)
     {
@@ -490,6 +553,7 @@ class Storage
 
     /**
      * @return mixed
+     * @throws Exception\AdapterException
      */
     public function getRoot()
     {
@@ -502,6 +566,7 @@ class Storage
     /**
      * @param $value
      * @return mixed
+     * @throws Exception\AdapterException
      */
     public function setRoot($value)
     {
@@ -511,25 +576,19 @@ class Storage
 
     /**
      * @return mixed
-     * @throws Exception\AdapterException
      */
     public function getPublicRoot()
     {
-        if (is_a($this->getAdapter(), LocalAdapter::class)) {
-            return ConfigHelper::getParam('file.storage')['local']['public_root'];
-        }
-
         return $this->public_root;
     }
 
     /**
      * @param $value
      * @return mixed
-     * @throws Exception\AdapterException
      */
     public function setPublicRoot($value)
     {
-        $this->public_root = $this->value;
+        $this->public_root = $value;
         return $this->getPublicRoot();
     }
 
@@ -550,14 +609,80 @@ class Storage
         return $this->alias = $value;
     }
 
+    /**
+     * @return mixed
+     */
     public function getTag()
     {
         return $this->tag;
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function setTag($value)
     {
         return $this->tag = $value;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this->getType();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this->getStatus();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param mixed $template
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+        return $this->getTemplate();
     }
 
 }

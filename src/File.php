@@ -1,17 +1,32 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File;
 
 use Cycle\ORM\ORMInterface;
-use Psr\Container\ContainerInterface;
+use Cycle\ORM\Transaction;
 use Yiisoft\Yii\File\Exception\FileException;
 use Yiisoft\Yii\File\Exception\StorageException;
+use Yiisoft\Yii\File\Helper\FileHelper;
+use Yiisoft\Yii\File\Helper\StorageHelper;
 use Yiisoft\Yii\File\Repository\StorageRepository;
+use Cycle\Annotated\Annotation\Column;
+use Cycle\Annotated\Annotation\Entity;
+use Cycle\Annotated\Annotation\Relation\HasMany;
+use Cycle\Annotated\Annotation\Relation\HasOne;
+use Cycle\Annotated\Annotation\Relation\BelongsTo;
+use Cycle\Annotated\Annotation\Table;
+use Cycle\Annotated\Annotation\Table\Index;
 
 /**
  * Class File
  * @package Yiisoft\Yii\Files
- * @Entity(repository = "Yiisoft/File/Repository/FileRepository")
+ * @Entity(repository = "Yiisoft/Yii/File/Repository/FileRepository")
  */
 class File
 {
@@ -20,12 +35,18 @@ class File
     const STATUS_INACTIVE = 0;
 
     /**
+     * @var string
+     * @Column(type = "text", nullable = false)
+     */
+    public $public_url;
+
+    /**
      * @Column(type = "primary")
      */
     protected $id;
 
     /**
-     * @Column(type = "integer(1024)")
+     * @Column(type = "integer(255)")
      */
     protected $size;
 
@@ -36,25 +57,25 @@ class File
 
     /**
      * @var string
-     * @Column(type = "string(2048)", nullable = false)
+     * @Column(type = "text", nullable = false)
      */
     protected $path;
 
     /**
      * @var string
-     * @Column(type = "string(2048)", nullable = false)
+     * @Column(type = "text", nullable = false)
      */
     protected $filename;
 
     /**
      * @var string
-     * @Column(type = "string(2048)", nullable = true)
+     * @Column(type = "string(255)", nullable = true)
      */
     protected $title;
 
     /**
      * @var string
-     * @Column(type = "string(2048)", nullable = false)
+     * @Column(type = "string(255)", nullable = false)
      */
     protected $mimetype;
 
@@ -65,145 +86,98 @@ class File
     protected $timestamp;
 
     /**
+     * @var string
+     * @Column(type = "string(255)", nullable = false)
+     */
+    protected $storage_alias;
+
+    /**
      * @var ORMInterface
      */
     private $orm;
 
     /**
      * @var string
-     * @Column(type = "string(2048)", nullable = false)
      */
-    private $_storageTag = "local";
+    private $tmpname;
 
-    /**
-     * @var bool
-     */
-    private $_useCache = true;
-
-    /**
-     * @var string
-     * @Column(type = "string(2048)", nullable = false)
-     */
-    public $public_url;
 
     /**
      * File constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->orm = $container->get(ORMInterface::class);
-    }
-
-
-    /**
      * @param $name
-     * @return array
+     * @param ORMInterface $orm
      * @throws FileException
      */
-    public static function getInstancesByFilesArray($name): array
+    public function __construct($name, ORMInterface $orm)
     {
-        if (!isset($_FILES[$name])) {
-            throw new FileException("Sent files is not founded");
+        if (preg_match("/[$]/m", $name)) {
+            $name = str_replace("$", null, $name);
+            $name = FileHelper::getPathFromFiles($name);
         }
 
-        $uploadedFiles = $_FILES[$name];
-
-        if (count($uploadedFiles) == 0) {
-            throw new FileException("Sent files is not founded");
+        $this->setTmpname($name);
+        if ($this->isNewFile()) {
+            $this->initNewFile();
         }
 
-        $files = [];
-
-        foreach ($uploadedFiles as $uploadedFile) {
-            $files[] = self::getInstanceByFilesArray($name);
-        }
-
-        return $files;
-    }
-
-    /**
-     * @param $name
-     * @param string $storageTag
-     * @return File
-     * @throws Exception\AdapterException
-     * @throws FileException
-     */
-    public static function getInstanceByFilesArray($name, $storageTag = "local"): File
-    {
-        if (!isset($_FILES[$name])) {
-            throw new FileException("Sent files is not founded");
-        }
-
-        $uploadedFile = $_FILES[$name];
-        if ($uploadedFile['error'] !== UPLOAD_ERR_OK) {
-            throw new FileException("Sent file has error");
-        }
-
-        $tmpName = $uploadedFile['tmp_name'];
-        $file = self::getInstance($tmpName, $storageTag);
-        $file->setTitle($tmpName['name']);
-        try {
-            $file->setPublicUrl();
-        } catch (\Exception $exception) {
-
-        }
-
-        if (!$file->exists()) {
-            throw new FileException("File is not exists");
-        }
-
-        return $file;
-    }
-
-    /**
-     * @param string $path
-     * @param string $storageTag
-     * @return File
-     * @throws Exception\AdapterException
-     */
-    public static function getInstance($path, $storageTag = "local"): File
-    {
-        $file = new File();
-
-        if ($storageTag == null) {
-            $storageTag = Storage::getLocalStorage();
-        }
-
-        $file->setPath($path);
-        $file->setStorageTag($storageTag);
-        return $file;
+        $this->orm = $orm;
     }
 
     /**
      * @return bool
-     * @throws Exception\AdapterException
      */
-    public function exists()
+    public function isNewFile()
     {
-        return $this->getStorage()->exists();
+        return $this->id === NULL;
     }
 
     /**
-     * @return Storage
-     * @throws \Exception
+     * @throws Exception\AdapterException
+     * @throws StorageException
      */
-    public function getStorage(): Storage
+    public function initNewFile()
     {
-        return ($this->_storageTag == "local") ? Storage::getLocalStorage() : $this->getStorageBy();
+        $this->setStorage("local");
+        $this->setSize(filesize($this->getTmpname()));
+        $this->setFilename(basename($this->getTmpname()));
+        $this->setMimetype(mime_content_type($this->getTmpname()));
+        $this->setTimestamp(filemtime($this->getTmpname()));
+        $this->setTitle($this->getFilename());
+    }
+
+    /**
+     * @param $value
+     * @return Storage
+     * @throws Exception\AdapterException
+     * @throws StorageException
+     */
+    public function setStorage($value): Storage
+    {
+        $alias = NULL;
+        if ($value == "local" || $value == NULL) {
+            $storage = Storage::getLocalStorage();
+            $alias = "local";
+        }
+
+        if ($alias == NULL) {
+            $storage = $this->getStorageBy($value);
+        }
+
+        $this->setStorageAlias($storage->getAlias());
+        return $this->getStorage();
     }
 
     /**
      * @return Storage|null
      * @throws StorageException
      */
-    private function getStorageBy()
+    private function getStorageBy($value)
     {
         /**
          * @var $repository StorageRepository
          */
         $repository = $this->orm->getRepository(Storage::class);
-        $storage = (!preg_match("#", $this->_storageTag)) ? $repository->getByTag($this->_storageTag) : $repository->getByAlias($this->_storageTag);
+        $storage = (preg_match("/[#]/m", $value)) ? $repository->getByTag(str_replace("#", null, $value)) : $repository->getByAlias($value);
         if (!is_a($storage, Storage::class)) {
             throw new StorageException("Storage is not founded");
         }
@@ -213,28 +187,122 @@ class File
     }
 
     /**
-     * @param $newPath
-     * @param Storage|null $storage
-     * @param array $config
-     * @return bool
-     * @throws Exception\AdapterException
+     * @return Storage
+     * @throws \Exception
      */
-    public function put($newPath, Storage $storage = null, $config = [])
+    public function getStorage(): Storage
     {
-        if ($storage == null) {
-            $storage = $this->getStorage();
+        $alias = $this->getStorageAlias();
+        if ($alias == "local" || $alias == NULL) {
+            $storage = Storage::getLocalStorage();
+            $storage->setFile($this);
+            return $storage;
         }
-        return $storage->put($newPath, $this, $config);
+
+        $repository = $this->orm->getRepository(Storage::class);
+        $storage = $repository->getByAlias($this->getStorageAlias());
+        $storage->setFile($this);
+        return $storage;
     }
 
     /**
-     * @param $file
+     * @return string
+     */
+    public function getStorageAlias(): ?string
+    {
+        return $this->storage_alias;
+    }
+
+
+    /**
+     * @param string $storage_alias
+     * @return string|null
+     */
+    public function setStorageAlias(string $storage_alias): ?string
+    {
+        $this->storage_alias = $storage_alias;
+        return $this->getStorageAlias();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTmpname()
+    {
+        return $this->tmpname;
+    }
+
+
+    /**
+     * @param $tmpname
+     * @return string
+     */
+    public function setTmpname($tmpname): string
+    {
+        $this->tmpname = $tmpname;
+        return $this->getTmpname();
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+
+    /**
+     * @param string $filename
+     * @return string
+     */
+    public function setFilename(string $filename): string
+    {
+        $this->filename = $filename;
+        return $this->getFilename();
+    }
+
+
+    /**
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
+     */
+    public function exists()
+    {
+        if ($this->isNewFile()) {
+            $this->checkTmpname();
+            return file_exists($this->tmpname);
+        }
+        $storage = $this->getStorage();
+        $storage->setFile($this);
+        return $storage->exists($this->path);
+    }
+
+    /**
+     * @throws FileException
+     */
+    public function checkTmpname()
+    {
+        if (strlen($this->getTmpname()) == 0) {
+            throw new FileException("The storage location of the temporary file is not specified");
+        }
+    }
+
+
+    /**
+     * @param $newFile
+     * @return bool
+     * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function update($newFile)
     {
+        if ($this->isNewFile()) {
+            throw new FileException("You cannot update the new file");
+        }
+
         return $this->getStorage()->update($newFile);
     }
 
@@ -251,50 +319,84 @@ class File
         if ($storage == null) {
             $storage = $this->getStorage();
         }
+
+        if ($this->isNewFile()) {
+            return $storage->write($newPath, $this->getTmpStream(), $config);
+        }
+
         return $storage->write($newPath, $this, $config);
     }
 
+
     /**
-     * @return bool|false|mixed|string
-     * @throws Exception\AdapterException
-     * @throws \League\Flysystem\FileNotFoundException
+     * @return false|resource
      */
-    public function read()
+    public function getTmpStream()
     {
-        return $this->getStorage()->read();
+        return fopen($this->getTmpname(), 'r+');
     }
+
 
     /**
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileNotFoundException
+     * @throws \Throwable
      */
     public function delete()
     {
-        return $this->getStorage()->delete();
+        if ($this->isNewFile()) {
+            throw new FileException("You cannot delete the new file");
+        }
+
+
+        $storage = $this->getStorage();
+        if (!$storage->delete()) {
+            return false;
+        }
+
+        $tr = new Transaction($this->orm);
+        $tr->delete($this);
+        $tr->run();
+
+        return true;
     }
+
 
     /**
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function readAndDelete()
     {
+        if ($this->isNewFile()) {
+            throw new FileException("You cannot delete the new file");
+        }
+
         return $this->getStorage()->readAndDelete();
     }
+
 
     /**
      * @param $to
      * @return bool
      * @throws Exception\AdapterException
+     * @throws FileException
      * @throws \League\Flysystem\FileExistsException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function rename($to)
     {
+        if ($this->isNewFile()) {
+            throw new FileException("You cannot rename the new file");
+        }
+
         return $this->getStorage()->rename($to);
     }
+
 
     /**
      * @param $to
@@ -305,7 +407,45 @@ class File
      */
     public function copy($to)
     {
+        if ($this->isNewFile()) {
+            return $this->put($to);
+        }
+
         return $this->getStorage()->copy($to);
+    }
+
+
+    /**
+     * @param null $filename
+     * @param string $storage
+     * @param array $config
+     * @return bool
+     * @throws Exception\AdapterException
+     * @throws StorageException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function put($filename = null, $storage = "local", $config = [])
+    {
+        $storage = $this->setStorage($storage);
+        $filename = $this->setPath($filename);
+        if ($this->isNewFile()) {
+            return $storage->put($filename, $this->read(), $config);
+        }
+        return $storage->put($filename, $this, $config);
+    }
+
+    /**
+     * @return bool|false|mixed|resource|string
+     * @throws Exception\AdapterException
+     * @throws \League\Flysystem\FileNotFoundException
+     */
+    public function read()
+    {
+        if ($this->isNewFile()) {
+            return $this->getTmpStream();
+        }
+
+        return $this->getStorage()->read();
     }
 
     /**
@@ -315,7 +455,7 @@ class File
      */
     public function getMimetype()
     {
-        return $this->getUseCache() ? $this->mimetype : $this->getStorage()->getMimetype();
+        return $this->mimetype;
     }
 
     /**
@@ -328,21 +468,13 @@ class File
     }
 
     /**
-     * @return bool
-     */
-    public function getUseCache()
-    {
-        return $this->_useCache;
-    }
-
-    /**
      * @return bool|false|mixed|string
      * @throws Exception\AdapterException
      * @throws \League\Flysystem\FileNotFoundException
      */
     public function getTimestamp()
     {
-        return $this->getUseCache() ? $this->timestamp : $this->getStorage()->getTimestamp();
+        return $this->timestamp;
     }
 
     /**
@@ -361,7 +493,7 @@ class File
      */
     public function getSize()
     {
-        return $this->getUseCache() ? $this->size : $this->getStorage()->getSize();
+        return $this->size;
     }
 
     /**
@@ -376,26 +508,11 @@ class File
     /**
      * @return string
      */
-    public function getStorageTag()
-    {
-        return $this->_storageTag;
-    }
-
-    /**
-     * @param string $_storageTag
-     * @return string
-     */
-    public function setStorageTag($_storageTag)
-    {
-        $this->_storageTag = $_storageTag;
-        return $this->getStorageTag();
-    }
-
-    /**
-     * @return string
-     */
     public function getTitle()
     {
+        if ($this->isNewFile()) {
+            return $this->getFilename();
+        }
         return $this->title;
     }
 
@@ -444,6 +561,9 @@ class File
      */
     public function getPathInfo()
     {
+        if ($this->isNewFile()) {
+            return pathinfo($this->getTmpname());
+        }
         return pathinfo($this->getPath());
     }
 
@@ -455,13 +575,25 @@ class File
         return $this->path;
     }
 
+
     /**
-     * @param $path
-     * @return string
+     * @param null $path
+     * @return string|null
+     * @throws \Exception
      */
-    public function setPath($path): ?string
+    public function setPath($path = null): ?string
     {
-        $this->exists($path) ? $this->path = $path : NULL;
+        if ($path == null) {
+            $this->path = $this->getBasename();
+        } else {
+            $this->path = $path;
+        }
+
+        if (strlen($this->getStorage()->getTemplate()) > 0) {
+            $this->path = StorageHelper::getPathFromTemplate($this->path, $this->getStorage()->getTemplate());
+        }
+        $this->path .= "." . $this->getExtension();
+        $this->setPublicUrl();
         return $this->getPath();
     }
 
@@ -474,20 +606,12 @@ class File
     }
 
     /**
-     * @return string
-     */
-    public function getFilename()
-    {
-        return $this->getPathInfo()['filename'];
-    }
-
-    /**
      * @return string|string[]
      * @throws \Exception
      */
     public function relativePath()
     {
-        return str_replace($this->getStorage()->getRoot(), $this->path);
+        return str_replace($this->getStorage()->getRoot(), null, $this->getPath());
     }
 
     /**
@@ -525,5 +649,20 @@ class File
         return $this->getPublicUrl();
     }
 
+    /**
+     * @return false|string
+     */
+    public function getTmpContents()
+    {
+        return file_get_contents($this->getTmpname());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
 }

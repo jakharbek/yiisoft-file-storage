@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File\Adapter;
 
@@ -24,6 +29,24 @@ use Yiisoft\Yii\File\Dto\ZipArchiveAdapterDTO;
 use Yiisoft\Yii\File\Exception\AdapterException;
 
 /**
+ * This class is a factory class for adapters in this class. You can create any adapter you need.
+ * List of available adapters:
+ * AWS              - @see  \Yiisoft\Yii\File\Dto\AwsS3AdapterDTO
+ * Azure            - @see  \Yiisoft\Yii\File\Dto\AzureAdapterDTO
+ * Cached           - @see  \Yiisoft\Yii\File\Dto\CachedAdapterDTO
+ * Digital Ocean    - @see  \Yiisoft\Yii\File\Dto\DigitalOceanSpacesAdapterDTO
+ * Dropbox          - @see  \Yiisoft\Yii\File\Dto\DropboxAdapterDTO
+ * FTP              - @see  \Yiisoft\Yii\File\Dto\FtpAdapterDTO
+ * Gitlab           - @see  \Yiisoft\Yii\File\Dto\GitlabAdapterDTO
+ * Google Storage   - @see  \Yiisoft\Yii\File\Dto\GoogleStorageAdapterDTO
+ * Local            - @see  \Yiisoft\Yii\File\Dto\LocalAdapterDTO
+ * Memory           - @see  \Yiisoft\Yii\File\Dto\MemoryAdapterDTO
+ * Rackspace        - @see  \Yiisoft\Yii\File\Dto\RackspaceAdapterDTO
+ * Replicate        - @see  \Yiisoft\Yii\File\Dto\ReplicateAdapterDTO
+ * Scaleway         - @see  \Yiisoft\Yii\File\Dto\ScalewayObjectStorageAdapterDTO
+ * SFTP             - @see  \Yiisoft\Yii\File\Dto\SftpAdapterDTO
+ * WebDAV           - @see  \Yiisoft\Yii\File\Dto\WebDAVAdapterDTO
+ * ZIP              - @see  \Yiisoft\Yii\File\Dto\ZipArchiveAdapterDTO
  * Class AdapterFactory
  * @package Yiisoft\Yii\File\Adapter
  */
@@ -72,7 +95,8 @@ class AdapterFactory
             case is_a($dto, CachedAdapterDTO::class) :
                 return new CachedAdapter($dto);
             default:
-                throw new AdapterException("Adapter DTO is not founded");
+                $className = get_class($dto);
+                throw new AdapterException("Adapter DTO is not founded:" . $className);
         }
     }
 }

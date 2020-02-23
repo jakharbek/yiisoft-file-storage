@@ -1,9 +1,21 @@
 <?php
+/**
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2020 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Jakharbek <jakharbek@gmail.com>
+ */
 
 namespace Yiisoft\Yii\File\Dto;
 
 
+use Yiisoft\Yii\File\Adapter\FtpAdapter;
+
 /**
+ * This class of DTO for working with FTP
+ * This DTO for work with @see FtpAdapter
+ * This DTO implements the flysystem arguments, for more information
+ *
  * Class FtpAdapterDTO
  * @package Dto
  */
