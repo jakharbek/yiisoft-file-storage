@@ -152,7 +152,7 @@ $file->put('user-avater',"cdn.site.domain");
 
 Read (get)
 ----
-For a list of files, use the features
+For a list of files, use the features Cycle ORM, `file` and `storag` are entities.
 
 Delete
 ----
