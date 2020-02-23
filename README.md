@@ -64,8 +64,10 @@ return [
 ```
 
 Now you need to update the database schema and get a new table
- after the scheme has been updated you can add your other storage servers if they exist in the table `storage`
+ after the scheme has been updated you can add your other storage servers.
 
+Storage
+---
 you should use the repository entity to create an instance of it fill the constructor
 
 ```php
@@ -77,35 +79,87 @@ $dto = new SftpAdapterDTO();
 $dto->host = "host";
 $dto->username = "username";
 $dto->password = "password";
-$dto->root = "/www/html/yoursite2.domain/static";
-
+$dto->root = "/www/html/cdn.site.domain/static";
 $adapter = AdapterFactory::create($dto);
 
 $storage = new Storage($adapter);
-$storage->setPublicUrl("http://cdn.yoursite2.domain/");
-$storage->setAlias("yoursite2");
-$storage->setTag('imageServer');
+$storage->setPublicUrl("http://cdn.site.domain/");
+$storage->setAlias("cdn.site.domain");
+$storage->setTag('image');
+$storage->setTemplate('/:year/:month/:day/:hour/:minute/:second/');
+
 ```
 and save in cycle orm
 
 now you have two repositories registered, one local by default, the other on a completely different server
 
-Upload File from $_FILES
+`if a template is specified at the repository then files will be downloaded according to this template it is optional it can be omitted`
+
+File
 -----------
-`profile-image` is sent file and is index in $_FILES 
+Once we have identified all of our file vaults,
+now let's upload files to our servers
+
+for this we need a class `Yiisoft\Yii\File\File` and now you need to create a new object of this class
+the constructor should specify the path to the (temporary) file or the name of the super-global $_FILES array
 ```php
 use Yiisoft\Yii\File\File;
-//one
-$file = File::getInstanceByFilesArray('profile-image');
-$file->put('/profile/image/1.jpg');//local storage
 
-$file = File::getInstanceByFilesArray('profile-image');
-$file->put('/profile/image/1.jpg','imageServer');//anyone server by tag
-//more
-$files_array = File::getInstancesByFilesArray('profiles-image');
-
-foreach($files_array as $file){
-    $file = File::getInstanceByFilesArray('profile-image');
-    $file->put('/profile/image/1.jpg','imageServer');//anyone server by tag
-}
+$file = new File('/var/www/html/tests/data/files/test-file-2.txt');
 ```
+
+for to specify a superglobal array, display the name of the array key with the dollar ($) prefix
+For example
+```html
+<input name="avatar" type="file" />
+```
+```php
+use Yiisoft\Yii\File\File;
+ 
+$file = new File('$avatar');
+```
+
+Now, using the method `put`, we can save the resulting file to one of our previously defined storage servers
+we can ask the server how, by tags, he will randomly select a server with such tags and upload a file there, or by alias in this case, he select one specific server
+the first argument takes what the name will be and the second argument on which server to upload the file
+
+for example tag:
+```php
+use Yiisoft\Yii\File\File;
+ 
+$file = new File('$avatar');
+$file->put('user-avatar',"#image");
+````
+
+for example alias:
+```php
+use Yiisoft\Yii\File\File;
+ 
+$file = new File('$avatar');
+$file->put('user-avater',"cdn.site.domain");
+```
+now he uploaded the file to the server but at the moment did not save this file in the database in the file table
+
+Now, in order to save in the database, use the features Cycle ORM
+```php 
+use Yiisoft\Yii\File\File;
+ 
+$file = new File('$avatar');
+$file->put('user-avater',"cdn.site.domain"); 
+(new ORM\Transaction($this->orm))->persist($file)->run();
+```
+
+
+Read (get)
+----
+For a list of files, use the features
+
+Delete
+----
+```php
+$file->delete();
+```
+
+Other features
+----
+there are many other possibilities besides you can see it in the class `Yiisoft\Yii\File\File` , `Yiisoft\Yii\File\Storage` and `Yiisoft\Yii\File\Adapter\AdapterFactory` and other sources
