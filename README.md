@@ -36,15 +36,15 @@ to the require section of your `composer.json` file.
 ### Directory Structure
 
 ```
-config/                                             configuration
-docs/                                               documentation
-src/                                                source code
-        Adapter/                                    Adapters
-        DTO/                                        DTOs
-        Exception/                                  Exceptions
-        Helper/                                     Helpers
-        Repository/                                 Repositories
-tests/                                              tests
+config/                                                                 configuration
+docs/                                                                   documentation
+src/                                                                    source code
+        Adapter/                                                        Adapters
+        DTO/                                                            DTOs
+        Exception/                                                      Exceptions
+        Helper/                                                         Helpers
+        Repository/                                                     Repositories
+tests/                                                                  tests
 ```
 
 Basic Usage
