@@ -33,6 +33,20 @@ or add
 
 to the require section of your `composer.json` file.
 
+### Directory Structure
+
+```
+config/                         configuration
+docs/                           documentation
+src/                            source code
+        Adapter/                Adapters
+        DTO/                    DTOs
+        Exception/              Exceptions
+        Helper/                 Helpers
+        Repository/             Repositories
+tests/                          tests
+```
+
 Basic Usage
 -----------
 
@@ -197,10 +211,8 @@ WebDAV - `Yiisoft\Yii\File\Adapter\WebDAVAdapter`
 
 Zip - `Yiisoft\Yii\File\Adapter\ZipArchiveAdapter`
 
-
-
-
-
+To get a copy of these adapters, you can get directly but the best use the factory `Yiisoft\Yii\File\Adapter\AdapterFactory`
+he takes as an argument DTO.
 
 Other features
 ----
