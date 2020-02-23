@@ -160,6 +160,49 @@ Delete
 $file->delete();
 ```
 
+Adapters
+----
+
+AWS S3 - `Yiisoft\Yii\File\Adapter\AwsS3Adapter`
+
+Azure - `Yiisoft\Yii\File\Adapter\AzureAdapter`
+
+Cached - `Yiisoft\Yii\File\Adapter\CachedAdapter`
+
+Digital Ocean - `Yiisoft\Yii\File\Adapter\DigitalOceanSpacesAdapter`
+
+Dropbox - `Yiisoft\Yii\File\Adapter\DropboxAdapter`
+
+FTP - `Yiisoft\Yii\File\Adapter\FtpAdapter`
+
+Gitlab - `Yiisoft\Yii\File\Adapter\GitlabAdapter`
+
+Google Cloud Storage - `Yiisoft\Yii\File\Adapter\GoogleStorageAdapter`
+
+Local - `Yiisoft\Yii\File\Adapter\LocalAdapter`
+
+Memory - `Yiisoft\Yii\File\Adapter\MemoryAdapter`
+
+Null - `Yiisoft\Yii\File\Adapter\NullAdapter`
+
+Rackspace - `Yiisoft\Yii\File\Adapter\RackspaceAdapter`
+
+Replicate - `Yiisoft\Yii\File\Adapter\ReplicateAdapter`
+
+Scaleway - `Yiisoft\Yii\File\Adapter\ScalewayObjectStorageAdapter`
+
+SFTP - `Yiisoft\Yii\File\Adapter\SftpAdapter`
+
+WebDAV - `Yiisoft\Yii\File\Adapter\WebDAVAdapter`
+
+Zip - `Yiisoft\Yii\File\Adapter\ZipArchiveAdapter`
+
+
+
+
+
+
 Other features
 ----
 there are many other possibilities besides you can see it in the class `Yiisoft\Yii\File\File` , `Yiisoft\Yii\File\Storage` and `Yiisoft\Yii\File\Adapter\AdapterFactory` and other sources
+
